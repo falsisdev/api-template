@@ -1,0 +1,23 @@
+{
+  "name": "falsisdev-api",
+  "version": "1.0.0",
+  "description": "FalsisDev's Api",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "falsisdb": "^2.2.5",
+    "node-fetch": "^2.6.1",
+    "owofy": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "api",
+    "falsisdev"
+  ],
+  "author": "falsisdev",
+  "license": "ISC"
+}
