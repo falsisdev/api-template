@@ -1,7 +1,38 @@
 const fetch = require("node-fetch")
 const owoo = require('owofy');
+const wiki = require('wikipedia');
+const falsis = require("falsisdb");
+const db = new falsis()
+const translate = require('@vitalets/google-translate-api');
 module.exports = {
+    wiki: async function(req, res) {
+        if(!req.query.wiki){
+            res.json({error: "Lütfen bir wiki araması girin.: /wiki?wiki=Batman"})
+        }
+        const page = await wiki.page(req.query.wiki);
+        const summary = await page.summary();
+        const kaynak = await wiki.setLang("tr");
+        res.json({kaynak, page, summary})
+},
+translate: async function(req, res) {
+     if(db.includes(`${req.query.key}`) === true){
+    if(!req.query.text){
+        res.json({error: "Lütfen çevirilecek yazıyı giriniz. /translate?text=Hello"})
+    }else if(!req.query.lang) {
+        res.json({error: "Lütfen çevirilecek dili giriniz. /translate?text=Hello&lang=tr"})
+    }
+    if(!req.query.from) {
+    res.json({error: "Lütfen hangi dilden çevirileceğini yazın. /translate?text=Hello&lang=tr&from=en"})
+    }
+   await translate(req.query.text, { from: req.query.from, to: req.query.lang }).then(c => {
+   res.json({translated: c.text})
+})
+}else{
+    res.json({error: "Üzgünüm, bu apiyi kullanabilmek için bir api key'e ihtiyacın var. ?key=KEY"})
+}
+},
     npm: async function (req, res) { 
+        if(db.includes(`${req.query.key}`) === true){
         if(!req.query.name) {
             return("Lütfen bir npm adı belirtin. Örnek: /api/npm?name=falsisdb")
         }
@@ -17,6 +48,9 @@ module.exports = {
             link: z.npm,
             downloads: z.downloads})
         })
+    }else{
+        res.json({hata: "Üzgünüm, bu apiyi kullanabilmek için bir api key'e ihtiyacın var.  ?key=KEY"})
+    }
       },
       owofy: async function (req, res) {
         if(!req.query.message) return(res.json({
