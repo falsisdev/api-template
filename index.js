@@ -1,13 +1,16 @@
 const api = require('./api.js');
 const express = require('express');
 const app = new express();
+console.log("💚 Api Başlatıldı")
 app.get('/', function(req, res) {
   res.send(`{
-  "/npm?name=:name",
+  "/npm?name=:name&key=YOUR_KEY",
   "/owofy?mesaj=:name",
   "/cat",
   "/dog",
-  "/lyrics?title=:name"
+  "/lyrics?title=:name",
+  "/translate?text=Hello&lang=tr&from=en&key=YOUR_KEY",
+  "/wiki?wiki=:name"
 }`)
 });
 app.get('/npm', function(req, res) {
@@ -24,5 +27,11 @@ app.get('/dog', function(req, res) {
 })
 app.get('/lyrics', function(req, res) {
   api.lyrics(req, res)
+})
+app.get("/wiki", function(req, res) {
+  api.wiki(req, res)
+})
+app.get("/translate", function(req, res) {
+  api.translate(req, res)
 })
 app.listen(3000)
