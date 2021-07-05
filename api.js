@@ -5,6 +5,28 @@ const falsis = require("falsisdb");
 const db = new falsis()
 const translate = require('@vitalets/google-translate-api');
 module.exports = {
+    youtube: async function(req, res) {
+if(!req.query.title) {
+    res.json({error: "Lütfen bir arama girin. Örnek: /youtube?title=nabim"})
+}else{
+    fetch(`https://api.leref.ga/yt-search?search=${req.query.title}`).then(a => a.json()).then(video => {
+        if(video.statusCode === 400){
+            res.json({error: "Böyle bir video bulunamadı."})
+        }
+        res.json({video})
+    })
+} /*     title: video.videos.0.title,
+         description: video.videos.0.description,
+         link: video.videos.0.url,
+         id: video.videos.0.videoId,
+         thumbnail: video.videos.0.image,
+         seconds: video.videos.0.seconds,
+         timestamp: video.videos.0.timestamp,
+         date: video.videos.0.ago,
+         views: video.videos.0.views,
+         publisher: video.videos.0.author.name,
+         publisherURL: video.videos.0.author.url*/
+    },
     wiki: async function(req, res) {
         if(!req.query.wiki){
             res.json({error: "Lütfen bir wiki araması girin.: /wiki?wiki=Batman"})
@@ -24,10 +46,10 @@ if(!req.query.hex) {
             hex: x.hex.value,
             image: "https://some-random-api.ml/canvas/colorviewer?hex=" + req.query.hex,
             rgb: {
-            r: x.rgb.r, 
-            g: x.rgb.g, 
-            b: x.rgb.b, 
-            rgb: x.rgb.value
+            r: x.rgvideo.r, 
+            g: x.rgvideo.g, 
+            b: x.rgvideo.b, 
+            rgb: x.rgvideo.value
         },
             hsl: {
             h: x.hsl.h, 
@@ -40,7 +62,7 @@ if(!req.query.hex) {
 }
 },
 translate: async function(req, res) {
-     if(db.includes(`${req.query.key}`) === true){
+     if(dvideo.includes(`${req.query.key}`) === true){
     if(!req.query.text){
         res.json({error: "Lütfen çevirilecek yazıyı giriniz. /translate?text=Hello"})
     }else if(!req.query.lang) {
@@ -57,7 +79,7 @@ translate: async function(req, res) {
 }
 },
     npm: async function (req, res) { 
-        if(db.includes(`${req.query.key}`) === true){
+        if(dvideo.includes(`${req.query.key}`) === true){
         if(!req.query.name) {
             return("Lütfen bir npm adı belirtin. Örnek: /api/npm?name=falsisdb")
         }
@@ -93,9 +115,9 @@ translate: async function(req, res) {
           },
             lyrics: async function (req, res) { 
                        if(!req.query.title) return(res.json({
-              hata: "Please enter a song name. Example: /api/lyrics?title=daisy"
+              hata: "Lütfen bir şarkı adı gir Örnek: /api/lyrics?title=daisy"
             }))
-            fetch(`https://some-random-api.ml/lyrics?title=${res.query.title}`).then(x => x.json()).then(z => {
+            fetch(`https://api.leref.ga/lyrics?song=${req.query.title}`).then(x => x.json()).then(z => {
               res.json({lyrics: z.lyrics})
             })
           },
