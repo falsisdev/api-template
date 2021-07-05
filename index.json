@@ -1,0 +1,11 @@
+{
+  "Npm": "/npm?name=:name&key=YOUR_KEY",
+  "Owofy": "/owofy?mesaj=:name",
+  "Cat": "/cat",
+  "Dog": "/dog",
+  "Lyrics": "/lyrics?title=:name",
+  "Translate": "/translate?text=Hello&lang=tr&from=en&key=YOUR_KEY",
+  "Wikipedia": "/wiki?wiki=:name",
+  "Color": "/color?hex=:hex",
+  "YouTube": "/youtube?title=:search"
+}
