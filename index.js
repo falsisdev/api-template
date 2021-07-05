@@ -3,17 +3,7 @@ const express = require('express');
 const app = new express();
 console.log("💚 Api Başlatıldı")
 app.get('/', function(req, res) {
-  res.send(`{
-  "/npm?name=:name&key=YOUR_KEY",
-  "/owofy?mesaj=:name",
-  "/cat",
-  "/dog",
-  "/lyrics?title=:name",
-  "/translate?text=Hello&lang=tr&from=en&key=YOUR_KEY",
-  "/wiki?wiki=:name",
-  "/color?hex=:hex",
-  "/youtube?title=:search"
-}`)
+res.sendFile(__dirname + "/index.json")
 });
 app.get("/youtube", function(req, res) {
   api.youtube(req, res)
