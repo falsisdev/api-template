@@ -11,9 +11,13 @@ app.get('/', function(req, res) {
   "/lyrics?title=:name",
   "/translate?text=Hello&lang=tr&from=en&key=YOUR_KEY",
   "/wiki?wiki=:name",
-  "/color?hex=:hex"
+  "/color?hex=:hex",
+  "/youtube?title=:search"
 }`)
 });
+app.get("/youtube", function(req, res) {
+  api.youtube(req, res)
+})
 app.get("/color", function(req, res) {
   api.color(req, res)
 })
