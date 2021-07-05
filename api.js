@@ -14,6 +14,31 @@ module.exports = {
         const kaynak = await wiki.setLang("tr");
         res.json({kaynak, page, summary})
 },
+color: async function(req, res) {
+if(!req.query.hex) {
+    res.json({error: "Lütfen bir hex kodu girin. Örnek: /color?hex=BDAAF9"})
+}else{
+    fetch(`https://www.thecolorapi.com/id?hex=${req.query.hex}&format=png`).then(a => a.json()).then(x => {
+        res.json({
+            name: x.name.value,
+            hex: x.hex.value,
+            image: "https://some-random-api.ml/canvas/colorviewer?hex=" + req.query.hex,
+            rgb: {
+            r: x.rgb.r, 
+            g: x.rgb.g, 
+            b: x.rgb.b, 
+            rgb: x.rgb.value
+        },
+            hsl: {
+            h: x.hsl.h, 
+            s: x.hsl.s, 
+            l: x.hsl.l, 
+            hsl: x.hsl.value
+        }
+        })
+    })
+}
+},
 translate: async function(req, res) {
      if(db.includes(`${req.query.key}`) === true){
     if(!req.query.text){
