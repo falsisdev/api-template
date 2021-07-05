@@ -10,9 +10,13 @@ app.get('/', function(req, res) {
   "/dog",
   "/lyrics?title=:name",
   "/translate?text=Hello&lang=tr&from=en&key=YOUR_KEY",
-  "/wiki?wiki=:name"
+  "/wiki?wiki=:name",
+  "/color?hex=:hex"
 }`)
 });
+app.get("/color", function(req, res) {
+  api.color(req, res)
+})
 app.get('/npm', function(req, res) {
   api.npm(req, res)
 })
