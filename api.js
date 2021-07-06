@@ -101,7 +101,7 @@ translate: async function(req, res) {
       },
       owofy: async function (req, res) {
         if(!req.query.message) return(res.json({
-            hata: "Please specify a message. Example: /api/owofy?message=Falsis"
+            hata: "Cannot find query message: /api/owofy?message=Falsis"
           }))
           var owo = owoo(req.query.message)
           res.json({
