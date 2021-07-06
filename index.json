@@ -4,7 +4,7 @@
   "language": ["en-US", "en", "tr"],
   "Api": {
   "Npm": "/npm?name=:name&key=YOUR_KEY",
-  "Owofy": "/owofy?mesaj=:name",
+  "Owofy": "/owofy?message=:name",
   "Cat": "/cat",
   "Dog": "/dog",
   "Lyrics": "/lyrics?title=:name",
