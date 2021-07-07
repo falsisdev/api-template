@@ -4,10 +4,12 @@ const wiki = require('wikipedia');
 const falsis = require("falsisdb");
 const db = new falsis()
 const translate = require('@vitalets/google-translate-api');
+const path = require("path");
 module.exports = {
     youtube: async function(req, res) {
 if(!req.query.title) {
-    res.json({error: "Lütfen bir arama girin. Örnek: /youtube?title=nabim"})
+    res.json({error: require(path.join(process.cwd(), "index.json")).youtube.error, 
+             queries: require(path.join(process.cwd(), "index.json")).youtube.queries.join(", ")})
 }else{
     fetch(`https://api.leref.ga/yt-search?search=${req.query.title}`).then(a => a.json()).then(video => {
         if(video.statusCode === 400){
@@ -29,7 +31,8 @@ if(!req.query.title) {
     },
     wiki: async function(req, res) {
         if(!req.query.wiki){
-            res.json({error: "Cannot find query wiki : /wiki?wiki=Batman"})
+            res.json({error: require(path.join(process.cwd(), "index.json")).wiki.error, 
+             queries: require(path.join(process.cwd(), "index.json")).eiki.queries.join(", ")})
         }
         const page = await wiki.page(req.query.wiki);
         const summary = await page.summary();
@@ -38,7 +41,8 @@ if(!req.query.title) {
 },
 color: async function(req, res) {
 if(!req.query.hex) {
-    res.json({error: "Cannot find query hex: /color?hex=BDAAF9"})
+    res.json({error: require(path.join(process.cwd(), "index.json")).color.error, 
+             queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})
 }else{
     fetch(`https://www.thecolorapi.com/id?hex=${req.query.hex}&format=png`).then(a => a.json()).then(x => {
         res.json({
@@ -62,31 +66,37 @@ if(!req.query.hex) {
 }
 },
 translate: async function(req, res) {
-     if(dvideo.includes(`${req.query.key}`) === true){
+     if(db.includes(`${req.query.key}`) === true){
     if(!req.query.text){
-        res.json({error: "Cannot find query text : /translate?text=Hello"})
+        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error, 
+             queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
     }else if(!req.query.lang) {
-        res.json({error: "Cannot find query lang: /translate?text=Hello&lang=tr"})
+        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error3, 
+             queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
     }
     if(!req.query.from) {
-    res.json({error: "Cannot find query from: /translate?text=Hello&lang=tr&from=en"})
+    res.json({error: require(path.join(process.cwd(), "index.json")).translate.error2, 
+             queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
     }
    await translate(req.query.text, { from: req.query.from, to: req.query.lang }).then(c => {
    res.json({translated: c.text})
 })
 }else{
-    res.json({error: "Cannot find query key : (api key) ?key=KEY"})
+    res.json({error: require(path.join(process.cwd(), "index.json")).key,
+queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
 }
 },
     npm: async function (req, res) { 
-        if(dvideo.includes(`${req.query.key}`) === true){
+        if(db.includes(`${req.query.key}`) === true){
         if(!req.query.name) {
-            return("Cannot find query name: /api/npm?name=falsisdb")
+            res.json({error: require(path.join(process.cwd(), "index.json")).npm.error,
+queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
         }
         
         fetch(`https://api.leref.ga/npm?search=${req.query.name}`).then(x => x.json()).then(z => {
             if(z.statusCode === 400) {
-                res.json({error: "No such NPM Package was found."})
+                res.json({error: require(path.join(process.cwd(), "index.json")).npm.error2,
+queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
             }
           res.json({name: z.name,
             description: z.description,
@@ -96,12 +106,14 @@ translate: async function(req, res) {
             downloads: z.downloads})
         })
     }else{
-        res.json({hata: "Cannot find query key : (api key) ?key=KEY"})
+        res.json({error: require(path.join(process.cwd(), "index.json")).key,
+            queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
     }
       },
       owofy: async function (req, res) {
         if(!req.query.message) return(res.json({
-            hata: "Cannot find query message: /api/owofy?message=Falsis"
+            error: require(path.join(process.cwd(), "index.json")).owofy.error,
+queries: require(path.join(process.cwd(), "index.json")).owofy.queries.join(", ")
           }))
           var owo = owoo(req.query.message)
           res.json({
@@ -115,7 +127,8 @@ translate: async function(req, res) {
           },
             lyrics: async function (req, res) { 
                        if(!req.query.title) return(res.json({
-              hata: "Cannot find query title:  /api/lyrics?title=daisy"
+             error: require(path.join(process.cwd(), "index.json")).lyrics.error,
+queries: require(path.join(process.cwd(), "index.json")).lyrics.queries.join(", ")
             }))
             fetch(`https://api.leref.ga/lyrics?song=${req.query.title}`).then(x => x.json()).then(z => {
               res.json({lyrics: z.lyrics})
@@ -127,3 +140,4 @@ translate: async function(req, res) {
             })
           }
 }
+
