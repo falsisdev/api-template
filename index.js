@@ -1,9 +1,10 @@
 const api = require('./api.js');
 const express = require('express');
 const app = new express();
+const path = require("path");
 console.log("💚 Api Başlatıldı")
 app.get('/', function(req, res) {
-res.sendFile(__dirname + "/index.json")
+res.json({api: require(path.join(process.cwd(), "index.json")).Api})
 });
 app.get("/youtube", function(req, res) {
   api.youtube(req, res)
