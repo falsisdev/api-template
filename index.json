@@ -1,8 +1,8 @@
 {
+  "Api": {
   "author": "FalsisDev",
   "description": "My personal api",
   "language": ["en-US", "en", "tr"],
-  "Api": {
   "Npm": "/npm?name=:name&key=YOUR_KEY",
   "Owofy": "/owofy?message=:name",
   "Cat": "/cat",
@@ -12,5 +12,41 @@
   "Wikipedia": "/wiki?wiki=:name",
   "Color": "/color?hex=:hex",
   "YouTube": "/youtube?title=:search"
+  },
+  "key": "Cannot find query key",
+  "youtube":{
+   "error": "Cannot find query title.",
+   "queries":["title"]
+  },
+  
+    "wiki":{
+   "error": "Cannot find query wiki.",
+   "queries":["wiki"]
+  },
+
+    "color":{
+   "error": "Cannot find query hex.",
+   "queries":["hex"]
+  },
+
+    "translate":{
+   "error": "Cannot find query text.",
+   "error2": "Cannot find query from",
+   "error3": "Cannot find query lang",
+   "queries":["text", "from", "lang", "key"]
+  },
+  "npm":{
+    "error": "Cannot find query name",
+    "error2": "No such npm found",
+    "queries": ["name", "key"]
+  },
+  "owofy":{
+    "error": "Cannot find query message",
+    "queries": ["message"]
+  },
+  "lyrics":{
+    "error": "Cannot find query title",
+    "queries": ["title"]
   }
+
 }
