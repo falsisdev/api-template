@@ -32,7 +32,7 @@ if(!req.query.title) {
     wiki: async function(req, res) {
         if(!req.query.wiki){
             res.json({error: require(path.join(process.cwd(), "index.json")).wiki.error, 
-             queries: require(path.join(process.cwd(), "index.json")).eiki.queries.join(", ")})
+             queries: require(path.join(process.cwd(), "index.json")).wiki.queries.join(", ")})
         }
         const page = await wiki.page(req.query.wiki);
         const summary = await page.summary();
