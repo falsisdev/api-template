@@ -5,7 +5,50 @@ const falsis = require("falsisdb");
 const db = new falsis()
 const translate = require('@vitalets/google-translate-api');
 const path = require("path");
+const color = require("color")
 module.exports = {
+  color: async function(req, res){
+    if(!req.query.hex) {
+      if(!req.query.rgb){
+      res.json({error: require(path.join(process.cwd(), "index.json")).color.error, 
+               queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})
+      }
+      const colorinfo = color(req.query.rgb)
+      fetch(`https://www.thecolorapi.com/id?rgb=${req.query.rgb}&format=png`).then(a => a.json()).then(x => { 
+        res.json({
+          name: x.name.value ,
+          hexcode: colorinfo.hex(),
+          rgbcode: "rgb(" + colorinfo.rgb().color.join(", ") + ")",
+          hslcode: "hsl(" + colorinfo.hsl().color.join(", ") + ")",
+          luminosity: colorinfo.luminosity(),
+          rgb: colorinfo.rgb(),
+          hsl: colorinfo.hsl(),
+          isLight: colorinfo.isLight(),
+          isDark: colorinfo.isDark()
+        })
+      })
+  }
+  if(!req.query.rgb){
+    if(!req.query.hex){
+      res.json({error: require(path.join(process.cwd(), "index.json")).color.error2, 
+      queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})  
+    }
+    const colorinfo = color("#" + req.query.hex)
+    fetch(`https://www.thecolorapi.com/id?hex=${req.query.hex}&format=png`).then(a => a.json()).then(x => { 
+  res.json({
+    name: x.name.value ,
+    hexcode: colorinfo.hex(),
+    rgbcode: "rgb(" + colorinfo.rgb().color.join(", ") + ")",
+    hslcode: "hsl(" + colorinfo.hsl().color.join(", ") + ")",
+    luminosity: colorinfo.luminosity(),
+    rgb: colorinfo.rgb(),
+    hsl: colorinfo.hsl(),
+    isLight: colorinfo.isLight(),
+    isDark: colorinfo.isDark()
+  })
+})
+  }
+  },
     youtube: async function(req, res) {
 if(!req.query.title) {
     res.json({error: require(path.join(process.cwd(), "index.json")).youtube.error, 
@@ -38,32 +81,6 @@ if(!req.query.title) {
         const summary = await page.summary();
         const kaynak = await wiki.setLang("tr");
         res.json({kaynak, page, summary})
-},
-color: async function(req, res) {
-if(!req.query.hex) {
-    res.json({error: require(path.join(process.cwd(), "index.json")).color.error, 
-             queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})
-}else{
-    fetch(`https://www.thecolorapi.com/id?hex=${req.query.hex}&format=png`).then(a => a.json()).then(x => {
-        res.json({
-            name: x.name.value,
-            hex: x.hex.value,
-            image: "https://some-random-api.ml/canvas/colorviewer?hex=" + req.query.hex,
-            rgb: {
-            r: x.rgvideo.r, 
-            g: x.rgvideo.g, 
-            b: x.rgvideo.b, 
-            rgb: x.rgvideo.value
-        },
-            hsl: {
-            h: x.hsl.h, 
-            s: x.hsl.s, 
-            l: x.hsl.l, 
-            hsl: x.hsl.value
-        }
-        })
-    })
-}
 },
 translate: async function(req, res) {
      if(db.includes(`${req.query.key}`) === true){

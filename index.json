@@ -10,7 +10,7 @@
   "Lyrics": "/lyrics?title=:name",
   "Translate": "/translate?text=Hello&lang=tr&from=en&key=YOUR_KEY",
   "Wikipedia": "/wiki?wiki=:name",
-  "Color": "/color?hex=:hex",
+  "Color": "/color?hex=:hex || /color?rgb=:rgb",
   "YouTube": "/youtube?title=:search"
   },
   "key": "Cannot find query key",
@@ -26,7 +26,8 @@
 
     "color":{
    "error": "Cannot find query hex.",
-   "queries":["hex"]
+   "error2": "Cannot find query rgb",
+   "queries":["hex", "rgb"]
   },
 
     "translate":{
@@ -47,6 +48,10 @@
   "lyrics":{
     "error": "Cannot find query title",
     "queries": ["title"]
+  },
+  "tdk":{
+    "error": "Cannot find query kelime",
+    "queries": "kelime"
   }
 
 }
