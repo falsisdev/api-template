@@ -18,7 +18,7 @@ module.exports = {
         res.json({
           name: x.name.value ,
           hexcode: colorinfo.hex(),
-          rgbcode: "rgb(" + colorinfo.rgb().color.join(", ") + ")",
+          rgbcode: "rgb(" + colorinfo.rgb().color.join(", ") + ")", 
           hslcode: "hsl(" + colorinfo.hsl().color.join(", ") + ")",
           luminosity: colorinfo.luminosity(),
           rgb: colorinfo.rgb(),
@@ -110,17 +110,25 @@ queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(
 queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
         }
         
-        fetch(`https://api.leref.ga/npm?search=${req.query.name}`).then(x => x.json()).then(z => {
-            if(z.statusCode === 400) {
+        fetch(`http://registry.npmjs.com/${req.query.name}`).then(x => x.json()).then(z => {
+            if(z.error === "not found") {
                 res.json({error: require(path.join(process.cwd(), "index.json")).npm.error2,
 queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
             }
-          res.json({name: z.name,
+          res.json({
+            name: z.name,
             description: z.description,
-            version: z.version,
-            owner: z.publisher,
-            link: z.npm,
-            downloads: z.downloads})
+            version: z["dist-tags"].latest,
+            owner: z.maintainers[0].name,
+            license: z.license,
+            keywords: z.keywords.join(", "),
+            url: 'https://npmjs.org/package/' + z.name,
+            readme:{
+                text: z.readme,
+                file: z.readmeFilename,
+                homepage: z.homepage
+            }
+        })
         })
     }else{
         res.json({error: require(path.join(process.cwd(), "index.json")).key,
