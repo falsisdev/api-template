@@ -79,7 +79,7 @@ if(!req.query.title) {
         }
         const page = await wiki.page(req.query.wiki);
         const summary = await page.summary();
-        const kaynak = await wiki.setLang("tr");
+        const kaynak = await wiki.setLang(req.query.lang || "tr");
         res.json({kaynak, page, summary})
 },
 translate: async function(req, res) {
