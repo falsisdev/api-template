@@ -21,7 +21,7 @@
   
     "wiki":{
    "error": "Cannot find query wiki.",
-   "queries":["wiki"]
+   "queries":["wiki", "lang"]
   },
 
     "color":{
