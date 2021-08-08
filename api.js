@@ -6,19 +6,24 @@ const db = new falsis()
 const translate = require('@vitalets/google-translate-api');
 const path = require("path");
 const color = require("color")
+const search = require('youtube-search');
+var opts = {
+  maxResults: 10,
+  key: "My Youtube API key isn't open source"
+};
 module.exports = {
   color: async function(req, res){
     if(!req.query.hex) {
       if(!req.query.rgb){
-      res.json({error: require(path.join(process.cwd(), "index.json")).color.error, 
+      res.json({error: require(path.join(process.cwd(), "index.json")).color.error,
                queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})
       }
       const colorinfo = color(req.query.rgb)
-      fetch(`https://www.thecolorapi.com/id?rgb=${req.query.rgb}&format=png`).then(a => a.json()).then(x => { 
+      fetch(`https://www.thecolorapi.com/id?rgb=${req.query.rgb}&format=png`).then(a => a.json()).then(x => {
         res.json({
           name: x.name.value ,
           hexcode: colorinfo.hex(),
-          rgbcode: "rgb(" + colorinfo.rgb().color.join(", ") + ")", 
+          rgbcode: "rgb(" + colorinfo.rgb().color.join(", ") + ")",
           hslcode: "hsl(" + colorinfo.hsl().color.join(", ") + ")",
           luminosity: colorinfo.luminosity(),
           rgb: colorinfo.rgb(),
@@ -30,11 +35,11 @@ module.exports = {
   }
   if(!req.query.rgb){
     if(!req.query.hex){
-      res.json({error: require(path.join(process.cwd(), "index.json")).color.error2, 
-      queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})  
+      res.json({error: require(path.join(process.cwd(), "index.json")).color.error2,
+      queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})
     }
     const colorinfo = color("#" + req.query.hex)
-    fetch(`https://www.thecolorapi.com/id?hex=${req.query.hex}&format=png`).then(a => a.json()).then(x => { 
+    fetch(`https://www.thecolorapi.com/id?hex=${req.query.hex}&format=png`).then(a => a.json()).then(x => {
   res.json({
     name: x.name.value ,
     hexcode: colorinfo.hex(),
@@ -51,15 +56,13 @@ module.exports = {
   },
     youtube: async function(req, res) {
 if(!req.query.title) {
-    res.json({error: require(path.join(process.cwd(), "index.json")).youtube.error, 
+    res.json({error: require(path.join(process.cwd(), "index.json")).youtube.error,
              queries: require(path.join(process.cwd(), "index.json")).youtube.queries.join(", ")})
 }else{
-    fetch(`https://api.leref.ga/yt-search?search=${req.query.title}`).then(a => a.json()).then(video => {
-        if(video.statusCode === 400){
-            res.json({error: "No such video was found"})
-        }
-        res.json({video})
-    })
+  search(req.query.title, opts, function(err, results) {
+    if(err) return res.json({error: "No such video found"})
+    res.json({results})
+  });
 } /*     title: video.videos.0.title,
          description: video.videos.0.description,
          link: video.videos.0.url,
@@ -74,7 +77,7 @@ if(!req.query.title) {
     },
     wiki: async function(req, res) {
         if(!req.query.wiki){
-            res.json({error: require(path.join(process.cwd(), "index.json")).wiki.error, 
+            res.json({error: require(path.join(process.cwd(), "index.json")).wiki.error,
              queries: require(path.join(process.cwd(), "index.json")).wiki.queries.join(", ")})
         }
         const page = await wiki.page(req.query.wiki);
@@ -85,14 +88,14 @@ if(!req.query.title) {
 translate: async function(req, res) {
      if(db.includes(`${req.query.key}`) === true){
     if(!req.query.text){
-        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error, 
+        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error,
              queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
     }else if(!req.query.lang) {
-        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error3, 
+        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error3,
              queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
     }
     if(!req.query.from) {
-    res.json({error: require(path.join(process.cwd(), "index.json")).translate.error2, 
+    res.json({error: require(path.join(process.cwd(), "index.json")).translate.error2,
              queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
     }
    await translate(req.query.text, { from: req.query.from, to: req.query.lang }).then(c => {
@@ -103,13 +106,13 @@ translate: async function(req, res) {
 queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
 }
 },
-    npm: async function (req, res) { 
+    npm: async function (req, res) {
         if(db.includes(`${req.query.key}`) === true){
         if(!req.query.name) {
             res.json({error: require(path.join(process.cwd(), "index.json")).npm.error,
 queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
         }
-        
+
         fetch(`http://registry.npmjs.com/${req.query.name}`).then(x => x.json()).then(z => {
             if(z.error === "not found") {
                 res.json({error: require(path.join(process.cwd(), "index.json")).npm.error2,
@@ -145,12 +148,12 @@ queries: require(path.join(process.cwd(), "index.json")).owofy.queries.join(", "
             owo
           })
         },
-        dog: async function (req, res) { 
+        dog: async function (req, res) {
             fetch(`https://dog.ceo/api/breeds/image/random`).then(x => x.json()).then(z => {
               res.json({link: z.message})
             })
           },
-            lyrics: async function (req, res) { 
+            lyrics: async function (req, res) {
                        if(!req.query.title) return(res.json({
              error: require(path.join(process.cwd(), "index.json")).lyrics.error,
 queries: require(path.join(process.cwd(), "index.json")).lyrics.queries.join(", ")
@@ -159,10 +162,9 @@ queries: require(path.join(process.cwd(), "index.json")).lyrics.queries.join(", 
               res.json({lyrics: z.lyrics})
             })
           },
-            cat: async function (req, res) { 
+            cat: async function (req, res) {
             fetch(`https://some-random-api.ml/img/cat`).then(x => x.json()).then(z => {
               res.json({link: z.link})
             })
           }
 }
-
