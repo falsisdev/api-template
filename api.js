@@ -9,14 +9,15 @@ const color = require("color")
 const search = require('youtube-search');
 var opts = {
   maxResults: 10,
-  key: "My Youtube API key isn't open source"
+  key: 'My YouTube api isnt open source'
 };
+var json = require(path.join(process.cwd(), "index.json"))
 module.exports = {
   color: async function(req, res){
     if(!req.query.hex) {
       if(!req.query.rgb){
-      res.json({error: require(path.join(process.cwd(), "index.json")).color.error,
-               queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})
+      res.json({error: json.color.error,
+               queries: json.color.queries.join(", ")})
       }
       const colorinfo = color(req.query.rgb)
       fetch(`https://www.thecolorapi.com/id?rgb=${req.query.rgb}&format=png`).then(a => a.json()).then(x => {
@@ -35,8 +36,8 @@ module.exports = {
   }
   if(!req.query.rgb){
     if(!req.query.hex){
-      res.json({error: require(path.join(process.cwd(), "index.json")).color.error2,
-      queries: require(path.join(process.cwd(), "index.json")).color.queries.join(", ")})
+      res.json({error: json.color.error2,
+      queries: json.color.queries.join(", ")})
     }
     const colorinfo = color("#" + req.query.hex)
     fetch(`https://www.thecolorapi.com/id?hex=${req.query.hex}&format=png`).then(a => a.json()).then(x => {
@@ -56,8 +57,8 @@ module.exports = {
   },
     youtube: async function(req, res) {
 if(!req.query.title) {
-    res.json({error: require(path.join(process.cwd(), "index.json")).youtube.error,
-             queries: require(path.join(process.cwd(), "index.json")).youtube.queries.join(", ")})
+    res.json({error: json.youtube.error,
+             queries: json.youtube.queries.join(", ")})
 }else{
   search(req.query.title, opts, function(err, results) {
     if(err) return res.json({error: "No such video found"})
@@ -77,8 +78,8 @@ if(!req.query.title) {
     },
     wiki: async function(req, res) {
         if(!req.query.wiki){
-            res.json({error: require(path.join(process.cwd(), "index.json")).wiki.error,
-             queries: require(path.join(process.cwd(), "index.json")).wiki.queries.join(", ")})
+            res.json({error: json.wiki.error,
+             queries: json.wiki.queries.join(", ")})
         }
         const page = await wiki.page(req.query.wiki);
         const summary = await page.summary();
@@ -88,35 +89,35 @@ if(!req.query.title) {
 translate: async function(req, res) {
      if(db.includes(`${req.query.key}`) === true){
     if(!req.query.text){
-        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error,
-             queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
+        res.json({error: json.translate.error,
+             queries: json.translate.queries.join(", ")})
     }else if(!req.query.lang) {
-        res.json({error: require(path.join(process.cwd(), "index.json")).translate.error3,
-             queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
+        res.json({error: json.translate.error3,
+             queries: json.translate.queries.join(", ")})
     }
     if(!req.query.from) {
-    res.json({error: require(path.join(process.cwd(), "index.json")).translate.error2,
-             queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
+    res.json({error: json.translate.error2,
+             queries: json.translate.queries.join(", ")})
     }
    await translate(req.query.text, { from: req.query.from, to: req.query.lang }).then(c => {
    res.json({translated: c.text})
 })
 }else{
-    res.json({error: require(path.join(process.cwd(), "index.json")).key,
-queries: require(path.join(process.cwd(), "index.json")).translate.queries.join(", ")})
+    res.json({error: json.key,
+queries: json.translate.queries.join(", ")})
 }
 },
     npm: async function (req, res) {
         if(db.includes(`${req.query.key}`) === true){
         if(!req.query.name) {
-            res.json({error: require(path.join(process.cwd(), "index.json")).npm.error,
-queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
+            res.json({error: json.npm.error,
+queries: json.npm.queries.join(", ")})
         }
 
         fetch(`http://registry.npmjs.com/${req.query.name}`).then(x => x.json()).then(z => {
             if(z.error === "not found") {
-                res.json({error: require(path.join(process.cwd(), "index.json")).npm.error2,
-queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
+                res.json({error: json.npm.error2,
+queries: json.npm.queries.join(", ")})
             }
           res.json({
             name: z.name,
@@ -134,14 +135,14 @@ queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")}
         })
         })
     }else{
-        res.json({error: require(path.join(process.cwd(), "index.json")).key,
-            queries: require(path.join(process.cwd(), "index.json")).npm.queries.join(", ")})
+        res.json({error: json.key,
+            queries: json.npm.queries.join(", ")})
     }
       },
       owofy: async function (req, res) {
         if(!req.query.message) return(res.json({
-            error: require(path.join(process.cwd(), "index.json")).owofy.error,
-queries: require(path.join(process.cwd(), "index.json")).owofy.queries.join(", ")
+            error: json.owofy.error,
+queries: json.owofy.queries.join(", ")
           }))
           var owo = owoo(req.query.message)
           res.json({
@@ -155,8 +156,8 @@ queries: require(path.join(process.cwd(), "index.json")).owofy.queries.join(", "
           },
             lyrics: async function (req, res) {
                        if(!req.query.title) return(res.json({
-             error: require(path.join(process.cwd(), "index.json")).lyrics.error,
-queries: require(path.join(process.cwd(), "index.json")).lyrics.queries.join(", ")
+             error: json.lyrics.error,
+queries: json.lyrics.queries.join(", ")
             }))
             fetch(`https://api.leref.ga/lyrics?song=${req.query.title}`).then(x => x.json()).then(z => {
               res.json({lyrics: z.lyrics})
