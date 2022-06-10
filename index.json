@@ -10,15 +10,9 @@
   "Lyrics": "/lyrics?title=:name",
   "Translate": "/translate?text=Hello&lang=tr&from=en&key=YOUR_KEY",
   "Wikipedia": "/wiki?wiki=:name",
-  "Color": "/color?hex=:hex || /color?rgb=:rgb",
-  "YouTube": "/youtube?title=:search"
+  "Color": "/color?hex=:hex || /color?rgb=:rgb"
   },
   "key": "Cannot find query key",
-  "youtube":{
-   "error": "Cannot find query title.",
-   "queries":["title"]
-  },
-  
     "wiki":{
    "error": "Cannot find query wiki.",
    "queries":["wiki", "lang"]
@@ -48,10 +42,6 @@
   "lyrics":{
     "error": "Cannot find query title",
     "queries": ["title"]
-  },
-  "tdk":{
-    "error": "Cannot find query kelime",
-    "queries": "kelime"
   }
 
 }

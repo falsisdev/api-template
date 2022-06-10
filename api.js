@@ -1,16 +1,11 @@
 const fetch = require("node-fetch")
-const owoo = require('owofy');
 const wiki = require('wikipedia');
 const falsis = require("falsisdb");
 const db = new falsis()
 const translate = require('@vitalets/google-translate-api');
 const path = require("path");
 const color = require("color")
-const search = require('youtube-search');
-var opts = {
-  maxResults: 10,
-  key: 'My YouTube api isnt open source'
-};
+const lyricsFinder = require("@jeve/lyrics-finder");
 var json = require(path.join(process.cwd(), "index.json"))
 module.exports = {
   color: async function(req, res){
@@ -56,26 +51,10 @@ module.exports = {
   }
   },
     youtube: async function(req, res) {
-if(!req.query.title) {
-    res.json({error: json.youtube.error,
-             queries: json.youtube.queries.join(", ")})
-}else{
-  search(req.query.title, opts, function(err, results) {
-    if(err) return res.json({error: "No such video found"})
-    res.json({results})
-  });
-} /*     title: video.videos.0.title,
-         description: video.videos.0.description,
-         link: video.videos.0.url,
-         id: video.videos.0.videoId,
-         thumbnail: video.videos.0.image,
-         seconds: video.videos.0.seconds,
-         timestamp: video.videos.0.timestamp,
-         date: video.videos.0.ago,
-         views: video.videos.0.views,
-         publisher: video.videos.0.author.name,
-         publisherURL: video.videos.0.author.url*/
-    },
+res.json({
+  error: "ERROR CODE 503 - Service Unavailable"
+})
+},
     wiki: async function(req, res) {
         if(!req.query.wiki){
             res.json({error: json.wiki.error,
@@ -144,7 +123,8 @@ queries: json.npm.queries.join(", ")})
             error: json.owofy.error,
 queries: json.owofy.queries.join(", ")
           }))
-          var owo = owoo(req.query.message)
+          var a = req.query.message
+          var owo = a.split("r").join("w").split("l").join("w")
           res.json({
             owo
           })
@@ -159,9 +139,23 @@ queries: json.owofy.queries.join(", ")
              error: json.lyrics.error,
 queries: json.lyrics.queries.join(", ")
             }))
-            fetch(`https://api.leref.ga/lyrics?song=${req.query.title}`).then(x => x.json()).then(z => {
-              res.json({lyrics: z.lyrics})
+            try {
+            lyricsFinder.LyricsFinder(req.query.title).then((data) => {
+              if(!data) {
+                res.json({
+                error: "Cannot find lyrics matched with '" + req.query.title + "'"
+              })
+            }else{
+              res.json({
+                lyrics: data
+              })
+            }
+          })
+        }catch(err) {
+            res.json({
+              error: "Cannot find lyrics matched with '" + req.query.title + "'"
             })
+          }
           },
             cat: async function (req, res) {
             fetch(`https://some-random-api.ml/img/cat`).then(x => x.json()).then(z => {

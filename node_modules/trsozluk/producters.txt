@@ -1,0 +1,12 @@
+Kodları Yazma Hakkındaki Öneri => https://npmjs.com/~kayro
+Kodların Taslakları => https://npmjs.com/~kayro
+Lisans Dosyası => https://npmjs.com/~kayro
+Kodlara Eklenen Özellikler => https://www.npmjs.com/~fleeingrhinoo
+README ve gitignore dosyaları => https://www.npmjs.com/~fleeingrhinoo
+Test Dosyası => https://www.npmjs.com/~fleeingrhinoo
+
+Kayro Github:
+https://github.com/egekayro46/
+
+Rhino Github:
+https://github.com/ardakaragoz/
