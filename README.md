@@ -17,7 +17,7 @@ A computer system that meets this standard is said to implement or expose an API
 The term API may refer either to the specification or to the implementation.
 ```
 
-[Offical Api Link](https://api.falsisdev.ga/)
+[Offical Api Link](https://api.falsisdev.repl.co/)
 
-<a href="https://api.falsisdev.ga/"><img src="https://cdn.discordapp.com/attachments/775822548519616562/862262132031619112/unknown.png"></a>
+<a href="https://api.falsisdev.repl.co/"><img src="https://cdn.discordapp.com/attachments/775822548519616562/862262132031619112/unknown.png"></a>
 <!--test-->
